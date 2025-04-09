@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,10 +16,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -97,20 +102,18 @@ fun MainScreen(viewModel: ItemViewModel = viewModel()) {
 
                         item {
                             // Header for each list group
-                            Text(
-                                text = "List ID: $listId",
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
-                                    .padding(16.dp)
+                            GroupHeader(
+                                listId = listId,
+                                itemCount = itemsInList.size,
+                                isExpanded = expandedGroups.contains(listId),
+                                onToggleExpand = { viewModel.toggleGroup(listId) }
                             )
                         }
 
-                        // Items in this list group
-                        items(itemsInList) { item ->
-                            ItemRow(item = item)
+                        if (expandedGroups.contains(listId)) {
+                            items(itemsInList) { item ->
+                                ItemRow(item = item)
+                            }
                         }
 
                         // Add some spacing between groups
@@ -123,6 +126,38 @@ fun MainScreen(viewModel: ItemViewModel = viewModel()) {
         }
     }
 }
+
+@Composable
+fun GroupHeader(
+    listId: Int,
+    itemCount: Int,
+    isExpanded: Boolean,
+    onToggleExpand: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .clickable { onToggleExpand() }
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "List ID: $listId ($itemCount items)",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+
+        Icon(
+            imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+            contentDescription = if (isExpanded) "Collapse" else "Expand",
+            tint = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
+}
+
+
 
 @Composable
 fun ItemRow(item: Item) {
