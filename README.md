@@ -6,16 +6,15 @@ This Android application was developed as part of "This Company's" coding challe
 
 ## Features
 
-- **Data Retrieval**: Fetches JSON data from the Fetch Rewards hiring API endpoint
+- **Data Retrieval**: Fetches JSON data from "The Company's" hiring API endpoint
 - **Data Processing**: 
   - Filters out items with null or empty name values
   - Groups items by `listId`
   - Sorts results first by `listId`, then by `name` within each group
 - **Interactive UI**:
   - Expandable/collapsable list sections for better navigation
-  - Clean, visually distinct item groups
+  - Simple, visually distinct item groups
   - Error handling and loading states
-  - Retry capability
 
 ## Technical Implementation
 
