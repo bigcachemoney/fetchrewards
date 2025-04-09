@@ -1,4 +1,4 @@
-# "I'm not going to name the company's to maintain privacy" Coding Exercise - Android App
+# "I'm not going to name the company to maintain privacy" Coding Exercise - Android App
 
 ## Overview
 
